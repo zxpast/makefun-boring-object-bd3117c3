@@ -8,8 +8,11 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const ENTRY =
-  "Sweeps up everything except the last line of dust, which it leaves as a signature.";
+// The review is built from two halves so the punchline lands as one
+// sentence: the sweep, then the signature it leaves behind.
+const ENTRY_HEAD = "Sweeps up everything except the last line of dust,";
+const ENTRY_TAIL = " which it leaves as a signature.";
+const ENTRY = ENTRY_HEAD + ENTRY_TAIL;
 
 // Gate guard: the sealed scorer accepts 1–200 UTF-8 characters, not only
 // whitespace, and a single line. Count code points, the way the gate does.
@@ -21,5 +24,6 @@ if (len < 1 || len > 200 || !ENTRY.trim() || ENTRY.includes("\n")) {
 }
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const outFile = join(outDir, "entry.txt");
 mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "entry.txt"), ENTRY, "utf8");
+writeFileSync(outFile, ENTRY, "utf8");
